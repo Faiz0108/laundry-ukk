@@ -24,14 +24,15 @@ export default function CustomersAdmin() {
     const [editForm, setEditForm] = useState({ nama: "", tlp: "", alamat: "", jenis_kelamin: "L" });
     const [saving, setSaving] = useState(false);
 
-    useEffect(() => { fetchCustomers(); }, []);
-
     const fetchCustomers = async () => {
         setLoading(true);
         const { data, error } = await supabase.from("tb_member").select("*, tb_outlet(nama)").order("id", { ascending: true });
         if (!error && data) setCustomers(data);
         setLoading(false);
     };
+
+    useEffect(() => { fetchCustomers(); }, []);
+
 
     const handleFormSubmit = async (data: { name: string; phone: string; address: string; province: string; gender: string }) => {
         const isDuplicatePhone = data.phone && customers.some(c => c.tlp && c.tlp === data.phone);
